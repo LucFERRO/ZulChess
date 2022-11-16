@@ -1,0 +1,28 @@
+.container {
+    padding: 5%;
+    width: 50%;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: 1fr;
+
+    >div {
+        width: 100%;
+        display: inherit;
+        place-content: center;
+        aspect-ratio: 1/1;
+
+        .piece {
+            font-size: 50px;
+            color: black
+
+        }
+    }
+
+    .whiteTile {
+        background-color: beige;
+    }
+    
+    .blackTile {
+        background-color: maroon;
+    }
+}

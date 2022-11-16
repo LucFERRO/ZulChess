@@ -17,6 +17,11 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "packagerOpts": {
+      "config": "metro.config.js",
+      "sourceExts": ["js", "jsx", "css", "scss", "sass"],
+      "transformer": "node_modules/react-native-css-transformer/index.js"
+    },
     "ios": {
       "supportsTablet": true
     },
