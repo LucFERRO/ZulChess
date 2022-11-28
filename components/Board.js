@@ -1,16 +1,23 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
+import Constants from 'expo-constants';
+import { Dimensions } from 'react-native';
+
+
+const windowWidth = Dimensions.get('window').width;
+
 
 import { Tile } from '../classes/Tiles'
 
-export default function Board() {
+export default function Board({ }) {
 
     const [chessboard, setChessboard] = useState({})
+    let letters = 'ABCDEFGH'.split('')
 
     useEffect(() => {
 
         let fullBoard = {}
-        let letters = 'ABCDEFGH'.split('')
+        // let letters = 'ABCDEFGH'.split('')
 
         for (let j = 0; j < 8; j++) {
             for (let i = 0; i < 8; i++) {
@@ -20,36 +27,42 @@ export default function Board() {
         }
 
         setChessboard(fullBoard)
-        
+
     }, [])
 
+    console.log(chessboard)
+
     return (
-        <View showsVerticalScrollIndicator={false} style={styles.boardContainer}>
+        <View
+            // showsVerticalScrollIndicator={false} 
+            style={styles.boardContainer}
+        >
             {chessboard && Object.keys(chessboard).map((tile,i) => {
-                return <View key={i} style={[styles.tile, chessboard[tile].isBlack() ? styles.blackTile : styles.whiteTile]}></View>
+                return <View key={i} style={[styles.tile, chessboard[tile].isBlack() ? styles.blackTile : styles.whiteTile]}><Text>{i}</Text></View>
             })}
         </View>
     )
 }
 
+const boardWidth = 340
+
 const styles = StyleSheet.create({
     boardContainer: {
-        flex: 1,
-        padding: 100,
-        width: '50vw',
-        minWidth: 1200,
+        // width: windowWidth*0.8,
+        // maxWidth: windowWidth*0.8,
+        // height: windowWidth*0.8,
+        width: boardWidth,
+        height: boardWidth,
+        backgroundColor: "red",
         flexDirection: 'row',
-        flexWrap: 'wrap'
-
+        flexWrap: "wrap",
     },
 
     tile: {
-        flex: 1,
-        minWidth: '12%',
-        maxWidth: '12%',
-        aspectRatio: 1 / 1,
-        justifyContent: "center",
-        alignItems: "center"
+        width: boardWidth / 8,
+        height: boardWidth / 8,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
 
     whiteTile: {
