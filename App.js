@@ -43,7 +43,7 @@ export default function App() {
             {/* <Tablet /> */}
             {/* <Mobile styles={mobileStyle} /> */}
 
-            <StatusBar display='none'/>
+            <StatusBar display='auto'/>
         </View>
     );
 }
