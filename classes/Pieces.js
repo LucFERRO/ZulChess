@@ -1,4 +1,4 @@
-class Piece {
+export class Piece {
     constructor(pieceName, team, symbol, isDead = false) {
         this.pieceName = pieceName;
         this.team = team;

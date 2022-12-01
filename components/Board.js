@@ -4,13 +4,10 @@ import Constants from 'expo-constants';
 import { Dimensions } from 'react-native';
 
 import { Tile } from '../classes/Tiles'
-import { King, Queen, Rook, Knight, Bishop, Pawn } from '../classes/Pieces'
+import { Piece, King, Queen, Rook, Knight, Bishop, Pawn } from '../classes/Pieces'
 
-// import teamTemplate from '../positions/Classic';
-// console.log(teamTemplate)
-
-import initialState from '../positions/Classic'
-console.log(initialState)
+import initialState32pieces from '../initialization/pieces/all32pieces'
+console.log(initialState32pieces)
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -30,6 +27,8 @@ export default function Board({ }) {
     let kingTest = new King('WhiteKing', true)
     let kingTest2 = new King('BlackKing', false)
 
+    let test = new Piece('Test', true, '9812')
+
     useEffect(() => {
 
         let fullBoard = {}
@@ -45,7 +44,7 @@ export default function Board({ }) {
         setChessboard(fullBoard)
     }, [])
 
-    console.log(chessboard)
+    chessboard && console.log(chessboard)
 
     // setPiece()
 
