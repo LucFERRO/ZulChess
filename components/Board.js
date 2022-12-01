@@ -6,8 +6,11 @@ import { Dimensions } from 'react-native';
 import { Tile } from '../classes/Tiles'
 import { Piece, King, Queen, Rook, Knight, Bishop, Pawn } from '../classes/Pieces'
 
-import initialState32pieces from '../initialization/pieces/all32pieces'
-console.log(initialState32pieces)
+import { completePieceList } from '../initialization/pieces/all32pieces'
+console.log('All 32 pieces:', completePieceList)
+
+import { initialBoard } from '../initialization/positions/classic';
+console.log('Initial board with all 64 tiles:', initialBoard)
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -16,35 +19,17 @@ export default function Board({ }) {
     const [chessboard, setChessboard] = useState()
     const [selectedPiece, setSelectedPiece] = useState()
 
-    let letters = 'ABCDEFGH'.split('')
-
     const setPiece = (piece, x, y) => {
         if (!chessboard) return
 
         chessboard[Object.keys(chessboard).filter(tile => chessboard[tile].getCoordinates().x == x && chessboard[tile].getCoordinates().y == y)].setPiece(piece)
     }
 
-    let kingTest = new King('WhiteKing', true)
-    let kingTest2 = new King('BlackKing', false)
-
-    let test = new Piece('Test', true, '9812')
-
     useEffect(() => {
-
-        let fullBoard = {}
-
-        for (let j = 0; j < 8; j++) {
-            for (let i = 0; i < 8; i++) {
-                window[`Tile${i}${7 - j}`] = new Tile(i, 7 - j)
-                fullBoard[`${letters[i]}${7 - j + 1}`] = window[`Tile${i}${7 - j}`]
-            }
-        }
-        window[`Tile${4}${4}`].setPiece(kingTest)
-        window[`Tile${4}${5}`].setPiece(kingTest2)
-        setChessboard(fullBoard)
+        setChessboard(initialBoard)
     }, [])
 
-    chessboard && console.log(chessboard)
+    // chessboard && console.log(chessboard)
 
     // setPiece()
 
@@ -56,6 +41,7 @@ export default function Board({ }) {
                 return <View key={i} style={[styles.tile, chessboard[tile].isBlack() ? styles.blackTile : styles.whiteTile]}>
                     <Text style={styles.tileText}>
                         {chessboard[tile].getPiece() && String.fromCharCode(chessboard[tile].getPiece().getSymbol())}
+                        {/* {tile} */}
                     </Text>
                 </View>
             })}
