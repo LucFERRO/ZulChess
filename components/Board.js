@@ -26,18 +26,36 @@ export default function Board() {
         selectedTile.piece && console.log('selectedTile: ', selectedTile)
     }, [selectedTile])
 
-    const handleTileClick = (tile) => {
-        if (!selectedTile.piece && tile.getPiece()) return setselectedTile({
-            tile: tile,
-            piece: tile.getPiece()
+    const clearSelection = () => {
+        Object.keys(chessboard).forEach( tile => chessboard[tile].switchIsMovableTo(false))
+        return setselectedTile({
+            tile: null,
+            piece: null
         })
+    }
+
+    const possibleMovement = (clickedTile) => {
+        if (!clickedTile.getPiece()) return
+        clickedTile.getPiece().legalMovementFrom(clickedTile, chessboard)
+    }
+
+    const handleTileClick = (tile) => {
+        if (!selectedTile.piece && tile.getPiece()) {
+            possibleMovement(tile)
+            return setselectedTile({
+                tile: tile,
+                piece: tile.getPiece()
+            })
+        }
         if (selectedTile.piece && !tile.getPiece()) {
+            if (!tile.getIsMovableTo()) return console.log('Illegal move')
             tile.setPiece(selectedTile.piece)
             selectedTile.tile.removePiece()
-            return setselectedTile({
-                tile: null,
-                piece: null
-            })
+            clearSelection()
+        }
+        if (selectedTile.piece && tile.getPiece()) {
+            if (selectedTile.piece == tile.getPiece()) return clearSelection()
+            console.log('Tile already taken!')
         }
     }
 
@@ -46,11 +64,11 @@ export default function Board() {
             // showsVerticalScrollIndicator={false} 
             style={styles.boardContainer}>
             {chessboard && Object.keys(chessboard).map((tile, i) => {
-                return <Pressable onPress={() => handleTileClick(chessboard[tile])} >
-                    <View key={i} style={[styles.tile, chessboard[tile].isBlack() ? styles.blackTile : styles.whiteTile]}>
+                return <Pressable key={i} onPress={() => handleTileClick(chessboard[tile])} >
+                    <View style={[styles.tile, chessboard[tile].isBlack() ? styles.blackTile : styles.whiteTile, (chessboard[tile].getIsMovableTo()) && styles.legalMovementTile]}>
                         <Text style={styles.tileText}>
                             {chessboard[tile].getPiece() && String.fromCharCode(chessboard[tile].getPiece().getSymbol())}
-                            {/* {tile} */}
+                            {/* {`x=${chessboard[tile].x}, y=${chessboard[tile].y}`} */}
                         </Text>
                     </View>
                 </Pressable>
@@ -74,6 +92,10 @@ const styles = StyleSheet.create({
         height: boardWidth / 8,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    legalMovementTile: {
+        borderWidth: 3,
+        borderColor: '#00C04B'
     },
     tileText: {
         fontSize: 35,

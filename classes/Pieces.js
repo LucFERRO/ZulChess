@@ -1,3 +1,6 @@
+import { Tile } from "./Tiles";
+import { legalHorizontalMovement, legalVerticalMovement , legalDiagonalMovement} from './Movement'
+
 export class Piece {
     constructor(pieceName, team, symbol, isDead = false) {
         this.pieceName = pieceName;
@@ -13,6 +16,10 @@ export class Piece {
     getTeam() {
         return this.team
     }
+
+    move(startingTile, tileList) {
+        console.log(startingTile)
+    }
 }
 
 export class King extends Piece {
@@ -22,8 +29,16 @@ export class King extends Piece {
         super(pieceName, team, chosenSymbol)
     }
 
-    move = (x, y) => {
-        console.log(this.pieceName)
+    legalMovementFrom = (startingTile, tileList) => {
+        let startingX = startingTile.getCoordinates().x
+        let startingY = startingTile.getCoordinates().y
+        Object.keys(tileList).forEach(tile => {
+            // if (tileList[tile].getCoordinates().x == startingX && ( (tileList[tile].getCoordinates().y - startingY + 1)*(tileList[tile].getCoordinates().y - startingY - 1) == 0 ) || tileList[tile].getCoordinates().y == startingY && ( (tileList[tile].getCoordinates().x - startingX + 1)*(tileList[tile].getCoordinates().x - startingX - 1) == 0 )) tileList[tile].switchIsMovableTo(true)
+
+            // if ((tileList[tile].getCoordinates().y - startingY + 1) * (tileList[tile].getCoordinates().y - startingY - 1) == 0 || (tileList[tile].getCoordinates().x - startingX + 1) * (tileList[tile].getCoordinates().x - startingX - 1) == 0) tileList[tile].switchIsMovableTo(true)
+
+            if (legalHorizontalMovement(startingTile, tileList[tile], 1) || legalVerticalMovement(startingTile, tileList[tile], 1) || legalDiagonalMovement(startingTile, tileList[tile], 1)) tileList[tile].switchIsMovableTo(true)
+        })
     }
 }
 
@@ -34,7 +49,7 @@ export class Queen extends Piece {
         super(pieceName, team, chosenSymbol)
     }
 
-    move = (x, y) => {
+    legalMovementFrom = (startingTile, tileList) => {
         console.log(this.pieceName)
     }
 }
@@ -46,7 +61,7 @@ export class Rook extends Piece {
         super(pieceName, team, chosenSymbol)
     }
 
-    move = (x, y) => {
+    legalMovementFrom = (startingTile, tileList) => {
         console.log(this.pieceName)
     }
 }
@@ -58,7 +73,7 @@ export class Bishop extends Piece {
         super(pieceName, team, chosenSymbol)
     }
 
-    move = (x, y) => {
+    legalMovementFrom = (startingTile, tileList) => {
         console.log(this.pieceName)
     }
 }
@@ -70,7 +85,7 @@ export class Knight extends Piece {
         super(pieceName, team, chosenSymbol)
     }
 
-    move = (x, y) => {
+    legalMovementFrom = (startingTile, tileList) => {
         console.log(this.pieceName)
     }
 }
@@ -82,7 +97,7 @@ export class Pawn extends Piece {
         super(pieceName, team, chosenSymbol)
     }
 
-    move = (x, y) => {
+    legalMovementFrom = (startingTile, tileList) => {
         console.log(this.pieceName)
     }
 }

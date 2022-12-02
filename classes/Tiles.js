@@ -1,8 +1,13 @@
 export class Tile {
-    constructor(x, y, piece = null) {
+    constructor(x, y, piece = null, movableTo = false) {
         this.x = x
         this.y = y
         this.piece = piece
+        this.movableTo = movableTo
+    }
+
+    getCoordinates() {
+        return { x: this.x, y: this.y }
     }
 
     setPiece(piece) {
@@ -13,15 +18,19 @@ export class Tile {
         this.piece = null
     }
 
-    getCoordinates() {
-        return { x: this.x, y: this.y }
-    }
-
     getPiece() {
         return this.piece
     }
 
     isBlack() {
         return (this.x + this.y) % 2 != 0
+    }
+
+    getIsMovableTo() {
+        return this.movableTo
+    }
+
+    switchIsMovableTo(bool) {
+        this.movableTo = bool
     }
 }

@@ -14,9 +14,13 @@ for (let j = 0; j < 8; j++) {
         // Generates the 64 tiles with proper naming and coordinates
         window[`Tile${i}${7 - j}`] = new Tile(i, 7 - j)
 
+
+        // A VIRER
+        if (7-j==3 && i ==3) window[`Tile${i}${7 - j}`].setPiece(whiteKing)
+
         //White
         if (7-j==0) {
-            if (i==3) window[`Tile${i}${7 - j}`].setPiece(whiteKing)
+            // if (i==3) window[`Tile${i}${7 - j}`].setPiece(whiteKing)    A REMETTRE
             if (i==4) window[`Tile${i}${7 - j}`].setPiece(whiteQueen)
             if (i*(i-7) == 0) window[`Tile${i}${7 - j}`].setPiece(window[`whiteRook${ i==0 ? 1 : 2 }`])
             if ((i-1)*(i-6) == 0) window[`Tile${i}${7 - j}`].setPiece(window[`whiteKnight${ i==0 ? 1 : 2 }`])
