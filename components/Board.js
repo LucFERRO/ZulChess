@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Constants from 'expo-constants';
 import { Dimensions } from 'react-native';
@@ -6,44 +6,54 @@ import { Dimensions } from 'react-native';
 import { Tile } from '../classes/Tiles'
 import { Piece, King, Queen, Rook, Knight, Bishop, Pawn } from '../classes/Pieces'
 
-import { completePieceList } from '../initialization/pieces/all32pieces'
-console.log('All 32 pieces:', completePieceList)
-
 import { initialBoard } from '../initialization/positions/classic';
-console.log('Initial board with all 64 tiles:', initialBoard)
 
 const windowWidth = Dimensions.get('window').width;
 
-export default function Board({ }) {
+export default function Board() {
 
-    const [chessboard, setChessboard] = useState()
-    const [selectedPiece, setSelectedPiece] = useState()
-
-    const setPiece = (piece, x, y) => {
-        if (!chessboard) return
-
-        chessboard[Object.keys(chessboard).filter(tile => chessboard[tile].getCoordinates().x == x && chessboard[tile].getCoordinates().y == y)].setPiece(piece)
-    }
+    const [chessboard, setChessboard] = useState(initialBoard)
+    const [selectedTile, setselectedTile] = useState({
+        tile: null,
+        piece: null
+    })
 
     useEffect(() => {
-        setChessboard(initialBoard)
+        console.table(chessboard)
     }, [])
 
-    // chessboard && console.log(chessboard)
+    useEffect(() => {
+        selectedTile.piece && console.log('selectedTile: ', selectedTile)
+    }, [selectedTile])
 
-    // setPiece()
+    const handleTileClick = (tile) => {
+        if (!selectedTile.piece && tile.getPiece()) return setselectedTile({
+            tile: tile,
+            piece: tile.getPiece()
+        })
+        if (selectedTile.piece && !tile.getPiece()) {
+            tile.setPiece(selectedTile.piece)
+            selectedTile.tile.removePiece()
+            return setselectedTile({
+                tile: null,
+                piece: null
+            })
+        }
+    }
 
     return (
         <View
             // showsVerticalScrollIndicator={false} 
             style={styles.boardContainer}>
             {chessboard && Object.keys(chessboard).map((tile, i) => {
-                return <View key={i} style={[styles.tile, chessboard[tile].isBlack() ? styles.blackTile : styles.whiteTile]}>
-                    <Text style={styles.tileText}>
-                        {chessboard[tile].getPiece() && String.fromCharCode(chessboard[tile].getPiece().getSymbol())}
-                        {/* {tile} */}
-                    </Text>
-                </View>
+                return <Pressable onPress={() => handleTileClick(chessboard[tile])} >
+                    <View key={i} style={[styles.tile, chessboard[tile].isBlack() ? styles.blackTile : styles.whiteTile]}>
+                        <Text style={styles.tileText}>
+                            {chessboard[tile].getPiece() && String.fromCharCode(chessboard[tile].getPiece().getSymbol())}
+                            {/* {tile} */}
+                        </Text>
+                    </View>
+                </Pressable>
             })}
         </View>
     )
