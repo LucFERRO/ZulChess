@@ -13,25 +13,19 @@ const windowWidth = Dimensions.get('window').width;
 export default function Board() {
 
     const [chessboard, setChessboard] = useState(initialBoard)
-    const [selectedTile, setselectedTile] = useState({
-        tile: null,
-        piece: null
-    })
+    const [selectedTile, setselectedTile] = useState(null)
 
     useEffect(() => {
         console.table(chessboard)
     }, [])
 
     useEffect(() => {
-        selectedTile.piece && console.log('selectedTile: ', selectedTile)
+        selectedTile && console.log('selectedTile: ', selectedTile)
     }, [selectedTile])
 
     const clearSelection = () => {
         Object.keys(chessboard).forEach( tile => chessboard[tile].switchIsMovableTo(false))
-        return setselectedTile({
-            tile: null,
-            piece: null
-        })
+        return setselectedTile(null)
     }
 
     const possibleMovement = (clickedTile) => {
@@ -40,22 +34,26 @@ export default function Board() {
     }
 
     const handleTileClick = (tile) => {
-        if (!selectedTile.piece && tile.getPiece()) {
+        if (!selectedTile && tile.getPiece()) {
             possibleMovement(tile)
-            return setselectedTile({
-                tile: tile,
-                piece: tile.getPiece()
-            })
+            return setselectedTile(tile)
         }
-        if (selectedTile.piece && !tile.getPiece()) {
+        if (selectedTile && selectedTile.getPiece() && !tile.getPiece()) {
             if (!tile.getIsMovableTo()) return console.log('Illegal move')
-            tile.setPiece(selectedTile.piece)
-            selectedTile.tile.removePiece()
+            tile.setPiece(selectedTile.getPiece())
+            selectedTile.removePiece()
             clearSelection()
         }
-        if (selectedTile.piece && tile.getPiece()) {
-            if (selectedTile.piece == tile.getPiece()) return clearSelection()
-            console.log('Tile already taken!')
+        if (selectedTile && selectedTile.getPiece() && tile.getPiece()) {
+            if (selectedTile.getPiece() == tile.getPiece()) return clearSelection()
+            if (selectedTile.getPiece().getTeam() == tile.getPiece().getTeam()) {
+                clearSelection()
+                possibleMovement(tile)
+                return setselectedTile(tile)
+            }
+            if (selectedTile.getPiece().getTeam() == !tile.getPiece().getTeam()) {
+                console.log('ENEMY TEAM! Attack not implemented yet')
+            }
         }
     }
 

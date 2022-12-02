@@ -9,6 +9,9 @@ completePieceList.forEach( (piece,i) => {
 
 let letters = 'ABCDEFGH'.split('')
 let initialBoard = {}
+
+let kingTest = new King('Test',true)
+
 for (let j = 0; j < 8; j++) {
     for (let i = 0; i < 8; i++) {
         // Generates the 64 tiles with proper naming and coordinates
@@ -17,6 +20,7 @@ for (let j = 0; j < 8; j++) {
 
         // A VIRER
         if (7-j==3 && i ==3) window[`Tile${i}${7 - j}`].setPiece(whiteKing)
+        if (7-j==3 && i ==4) window[`Tile${i}${7 - j}`].setPiece(kingTest)
 
         //White
         if (7-j==0) {
