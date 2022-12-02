@@ -63,11 +63,12 @@ export default function Board() {
             style={styles.boardContainer}>
             {chessboard && Object.keys(chessboard).map((tile, i) => {
                 return <Pressable key={i} onPress={() => handleTileClick(chessboard[tile])} >
-                    <View style={[styles.tile, chessboard[tile].isBlack() ? styles.blackTile : styles.whiteTile, (chessboard[tile].getIsMovableTo()) && styles.legalMovementTile]}>
+                    <View style={[styles.tile, chessboard[tile].isBlack() ? styles.blackTile : styles.whiteTile]}>
                         <Text style={styles.tileText}>
                             {chessboard[tile].getPiece() && String.fromCharCode(chessboard[tile].getPiece().getSymbol())}
                             {/* {`x=${chessboard[tile].x}, y=${chessboard[tile].y}`} */}
                         </Text>
+                        {chessboard[tile].getIsMovableTo() && <View style={styles.legalMovementTile}></View>}
                     </View>
                 </Pressable>
             })}
@@ -90,13 +91,25 @@ const styles = StyleSheet.create({
         height: boardWidth / 8,
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    legalMovementTile: {
+        position: 'relative',
         borderWidth: 3,
-        borderColor: '#00C04B'
+        borderColor: 'transparent'
+    },
+    // legalMovementTile: {
+    //     borderWidth: 3,
+    //     borderColor: '#FF8919'
+    // },
+    legalMovementTile: {
+        width: boardWidth / 16,
+        height: boardWidth / 16,
+        borderRadius: 50,
+        backgroundColor: '#FF8919',
+        position: 'absolute',
+        top: '25%',
+        left: '20%'
     },
     tileText: {
-        fontSize: 35,
+        fontSize: 30,
         color: 'black'
     },
     whiteTile: {

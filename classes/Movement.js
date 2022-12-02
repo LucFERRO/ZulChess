@@ -5,7 +5,7 @@ const legalHorizontalMovement = (startingTile, targetTile, movement) => {
     let targetX = targetTile.getCoordinates().x
     let startingY = startingTile.getCoordinates().y
     let targetY = targetTile.getCoordinates().y
-    return (startingX - targetX - movement) * (startingX - targetX + movement) <= 0 && startingY == targetY
+    return (startingX - targetX - movement) * (startingX - targetX + movement) <= 0 && (startingX != targetX) && startingY == targetY 
 }
 
 const legalVerticalMovement = (startingTile, targetTile, movement) => {
@@ -13,7 +13,7 @@ const legalVerticalMovement = (startingTile, targetTile, movement) => {
     let targetX = targetTile.getCoordinates().x
     let startingY = startingTile.getCoordinates().y
     let targetY = targetTile.getCoordinates().y
-    return (startingY - targetY - movement) * (startingY - targetY + movement) <= 0 && startingX == targetX
+    return (startingY - targetY - movement) * (startingY - targetY + movement) <= 0 && (startingY != targetY) && startingX == targetX
 }
 
 const legalDiagonalMovement = (startingTile, targetTile, movement) => {
@@ -23,6 +23,7 @@ const legalDiagonalMovement = (startingTile, targetTile, movement) => {
     let targetY = targetTile.getCoordinates().y
     return (startingX - targetX - movement) * (startingX - targetX + movement) <= 0 
     && (startingY - targetY - movement) * (startingY - targetY + movement) <= 0
+    && startingTile != targetTile
     && (startingX - targetX - movement) * (startingX - targetX + movement) == (startingY - targetY - movement) * (startingY - targetY + movement)
 }
 
@@ -34,6 +35,8 @@ const knightMovement = (startingTile, targetTile) => {
 
     let horiMovement = startingX - targetX
     let vertiMovement = startingY - targetY
+
+    // return (horiMovement - 1)*(vertiMovement - 2) == 0 || (horiMovement + 1)*(vertiMovement - 2) == 0 || (horiMovement - 1)*(vertiMovement + 2) == 0 || (horiMovement + 1)*(vertiMovement + 2) == 0 
 
     // return (horiMovement == 1 && vertiMovement == 2) || (horiMovement == -1 && vertiMovement == 2) 
     // || (horiMovement == 1 && vertiMovement == -2) || (horiMovement == -1 && vertiMovement == -2) || (horiMovement == 2 && vertiMovement == 1) || (horiMovement == 2 && vertiMovement == -1) || (horiMovement == -2 && vertiMovement == 1) || (horiMovement == -2 && vertiMovement == -1)

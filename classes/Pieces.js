@@ -55,11 +55,7 @@ export class Queen extends Piece {
         let startingY = startingTile.getCoordinates().y
 
         Object.keys(tileList).forEach(tile => {
-            if (
-                legalHorizontalMovement(startingTile, tileList[tile], 7) 
-            || legalVerticalMovement(startingTile, tileList[tile], 7) 
-            || legalDiagonalMovement(startingTile, tileList[tile], 7)
-            ) tileList[tile].switchIsMovableTo(true)
+            if (legalHorizontalMovement(startingTile, tileList[tile], 7) || legalVerticalMovement(startingTile, tileList[tile], 7) || legalDiagonalMovement(startingTile, tileList[tile], 7)) tileList[tile].switchIsMovableTo(true)
         })
     }
 }
