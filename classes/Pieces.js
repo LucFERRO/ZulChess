@@ -1,5 +1,5 @@
 import { Tile } from "./Tiles";
-import { legalHorizontalMovement, legalVerticalMovement , legalDiagonalMovement} from './Movement'
+import { legalHorizontalMovement, legalVerticalMovement, legalDiagonalMovement, knightMovement } from './Movement'
 
 export class Piece {
     constructor(pieceName, team, symbol, isDead = false) {
@@ -32,6 +32,7 @@ export class King extends Piece {
     legalMovementFrom = (startingTile, tileList) => {
         let startingX = startingTile.getCoordinates().x
         let startingY = startingTile.getCoordinates().y
+
         Object.keys(tileList).forEach(tile => {
             // if (tileList[tile].getCoordinates().x == startingX && ( (tileList[tile].getCoordinates().y - startingY + 1)*(tileList[tile].getCoordinates().y - startingY - 1) == 0 ) || tileList[tile].getCoordinates().y == startingY && ( (tileList[tile].getCoordinates().x - startingX + 1)*(tileList[tile].getCoordinates().x - startingX - 1) == 0 )) tileList[tile].switchIsMovableTo(true)
 
@@ -50,7 +51,16 @@ export class Queen extends Piece {
     }
 
     legalMovementFrom = (startingTile, tileList) => {
-        console.log(this.pieceName)
+        let startingX = startingTile.getCoordinates().x
+        let startingY = startingTile.getCoordinates().y
+
+        Object.keys(tileList).forEach(tile => {
+            if (
+                legalHorizontalMovement(startingTile, tileList[tile], 7) 
+            || legalVerticalMovement(startingTile, tileList[tile], 7) 
+            || legalDiagonalMovement(startingTile, tileList[tile], 7)
+            ) tileList[tile].switchIsMovableTo(true)
+        })
     }
 }
 
@@ -62,7 +72,12 @@ export class Rook extends Piece {
     }
 
     legalMovementFrom = (startingTile, tileList) => {
-        console.log(this.pieceName)
+        let startingX = startingTile.getCoordinates().x
+        let startingY = startingTile.getCoordinates().y
+
+        Object.keys(tileList).forEach(tile => {
+            if (legalHorizontalMovement(startingTile, tileList[tile], 7) || legalVerticalMovement(startingTile, tileList[tile], 7) ) tileList[tile].switchIsMovableTo(true)
+        })
     }
 }
 
@@ -74,7 +89,12 @@ export class Bishop extends Piece {
     }
 
     legalMovementFrom = (startingTile, tileList) => {
-        console.log(this.pieceName)
+        let startingX = startingTile.getCoordinates().x
+        let startingY = startingTile.getCoordinates().y
+
+        Object.keys(tileList).forEach(tile => {
+            if (legalDiagonalMovement(startingTile, tileList[tile], 7)) tileList[tile].switchIsMovableTo(true)
+        })
     }
 }
 
@@ -86,7 +106,9 @@ export class Knight extends Piece {
     }
 
     legalMovementFrom = (startingTile, tileList) => {
-        console.log(this.pieceName)
+        Object.keys(tileList).forEach(tile => {
+            if (knightMovement(startingTile, tileList[tile])) tileList[tile].switchIsMovableTo(true)
+        })
     }
 }
 

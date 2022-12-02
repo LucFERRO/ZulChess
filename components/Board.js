@@ -24,7 +24,7 @@ export default function Board() {
     }, [selectedTile])
 
     const clearSelection = () => {
-        Object.keys(chessboard).forEach( tile => chessboard[tile].switchIsMovableTo(false))
+        Object.keys(chessboard).forEach(tile => chessboard[tile].switchIsMovableTo(false))
         return setselectedTile(null)
     }
 
