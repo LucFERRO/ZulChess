@@ -21,6 +21,7 @@ export default function Board() {
 
     useEffect(() => {
         selectedTile && console.log('selectedTile: ', selectedTile)
+        // console.table(chessboard)
     }, [selectedTile])
 
     const clearSelection = () => {
@@ -39,20 +40,28 @@ export default function Board() {
             return setselectedTile(tile)
         }
         if (selectedTile && selectedTile.getPiece() && !tile.getPiece()) {
-            if (!tile.getIsMovableTo()) return console.log('Illegal move')
+            if (!tile.getIsMovableTo()) return console.log('Illegal move.')
             tile.setPiece(selectedTile.getPiece())
             selectedTile.removePiece()
             clearSelection()
         }
         if (selectedTile && selectedTile.getPiece() && tile.getPiece()) {
+            //If clicking on the selected piece, unselect
             if (selectedTile.getPiece() == tile.getPiece()) return clearSelection()
+
+            //If clicking on an other piece from the same team, change selected piece
             if (selectedTile.getPiece().getTeam() == tile.getPiece().getTeam()) {
                 clearSelection()
                 possibleMovement(tile)
                 return setselectedTile(tile)
             }
-            if (selectedTile.getPiece().getTeam() == !tile.getPiece().getTeam()) {
-                console.log('ENEMY TEAM! Attack not implemented yet')
+
+            //If clicking on an enemy piece within legal movement, attack
+            if (tile.getIsMovableTo()) {
+                tile.getPiece().death()
+                tile.setPiece(selectedTile.getPiece())
+                selectedTile.removePiece()
+                clearSelection()
             }
         }
     }

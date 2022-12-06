@@ -17,6 +17,10 @@ export class Piece {
         return this.team
     }
 
+    death() {
+        this.isDead = true
+    }
+
     move(startingTile, tileList) {
         console.log(startingTile)
     }
