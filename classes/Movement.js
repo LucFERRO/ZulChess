@@ -44,4 +44,15 @@ const knightMovement = (startingTile, targetTile) => {
     return ((horiMovement - 1)*(horiMovement + 1) == 0 && (vertiMovement - 2)*(vertiMovement + 2) == 0 ) || (horiMovement - 2)*(horiMovement + 2) == 0 && (vertiMovement - 1)*(vertiMovement + 1) == 0 
 }
 
-export { legalHorizontalMovement, legalVerticalMovement, legalDiagonalMovement, knightMovement }
+const pawnMovement = (startingTile, targetTile) => {
+    let startingX = startingTile.getCoordinates().x
+    let targetX = targetTile.getCoordinates().x
+    let startingY = startingTile.getCoordinates().y
+    let targetY = targetTile.getCoordinates().y
+    let team = startingTile.getPiece().getTeam()
+    let delta = team ? 1 : -1
+
+    return (targetY == startingY + delta) && (targetX == startingX) || (team && startingTile.getCoordinates().y == 1 || !team && startingTile.getCoordinates().y == 6) && (targetY == startingY + 2*delta) && (targetX == startingX) 
+}
+
+export { legalHorizontalMovement, legalVerticalMovement, legalDiagonalMovement, knightMovement, pawnMovement }

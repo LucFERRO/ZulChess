@@ -1,5 +1,5 @@
 import { Tile } from "./Tiles";
-import { legalHorizontalMovement, legalVerticalMovement, legalDiagonalMovement, knightMovement } from './Movement'
+import { legalHorizontalMovement, legalVerticalMovement, legalDiagonalMovement, knightMovement, pawnMovement } from './Movement'
 
 export class Piece {
     constructor(pieceName, team, symbol, isDead = false) {
@@ -115,7 +115,9 @@ export class Pawn extends Piece {
         super(pieceName, team, chosenSymbol)
     }
 
-    legalMovementFrom = (startingTile, tileList) => {
-        console.log(this.pieceName)
+    legalMovementFrom = (startingTile, tileList, team) => {
+        Object.keys(tileList).forEach(tile => {
+            if (pawnMovement(startingTile, tileList[tile])) tileList[tile].switchIsMovableTo(true)
+        })
     }
 }
