@@ -23,8 +23,8 @@ const legalDiagonalMovement = (startingTile, targetTile, movement) => {
     let targetY = targetTile.getCoordinates().y
     return (startingX - targetX - movement) * (startingX - targetX + movement) <= 0 
     && (startingY - targetY - movement) * (startingY - targetY + movement) <= 0
-    && startingTile != targetTile
     && (startingX - targetX - movement) * (startingX - targetX + movement) == (startingY - targetY - movement) * (startingY - targetY + movement)
+    && startingTile != targetTile
 }
 
 const knightMovement = (startingTile, targetTile) => {
@@ -53,6 +53,31 @@ const pawnMovement = (startingTile, targetTile) => {
     let delta = team ? 1 : -1
 
     return (targetY == startingY + delta) && (targetX == startingX) || (team && startingTile.getCoordinates().y == 1 || !team && startingTile.getCoordinates().y == 6) && (targetY == startingY + 2*delta) && (targetX == startingX) 
+    // && !targetTile.getPiece()
 }
 
-export { legalHorizontalMovement, legalVerticalMovement, legalDiagonalMovement, knightMovement, pawnMovement }
+const handleHorizontalCollision = () => {
+    
+}
+
+const handleVerticalCollision = () => {
+
+}
+
+const handleDiagonalCollision = (startingTile, tilesArray) => {
+    let upLeft = 7
+    let upRight = 7
+    let downLeft = 7
+    let downRight = 7
+
+    let startingX = startingTile.getCoordinates().x
+    let startingY = startingTile.getCoordinates().y
+
+    for (let i=1 ; i<8 ; i++) {
+        
+    }
+
+    console.log(startingTile, tilesArray)
+}
+
+export { legalHorizontalMovement, legalVerticalMovement, legalDiagonalMovement, knightMovement, pawnMovement, handleHorizontalCollision, handleVerticalCollision, handleDiagonalCollision }

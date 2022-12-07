@@ -1,5 +1,5 @@
 import { Tile } from "./Tiles";
-import { legalHorizontalMovement, legalVerticalMovement, legalDiagonalMovement, knightMovement, pawnMovement } from './Movement'
+import { legalHorizontalMovement, legalVerticalMovement, legalDiagonalMovement, knightMovement, pawnMovement, handleHorizontalCollision, handleVerticalCollision, handleDiagonalCollision } from './Movement'
 
 export class Piece {
     constructor(pieceName, team, symbol, isDead = false) {
@@ -34,8 +34,6 @@ export class King extends Piece {
     }
 
     legalMovementFrom = (startingTile, tileList) => {
-        let startingX = startingTile.getCoordinates().x
-        let startingY = startingTile.getCoordinates().y
 
         Object.keys(tileList).forEach(tile => {
             // if (tileList[tile].getCoordinates().x == startingX && ( (tileList[tile].getCoordinates().y - startingY + 1)*(tileList[tile].getCoordinates().y - startingY - 1) == 0 ) || tileList[tile].getCoordinates().y == startingY && ( (tileList[tile].getCoordinates().x - startingX + 1)*(tileList[tile].getCoordinates().x - startingX - 1) == 0 )) tileList[tile].switchIsMovableTo(true)
@@ -55,8 +53,6 @@ export class Queen extends Piece {
     }
 
     legalMovementFrom = (startingTile, tileList) => {
-        let startingX = startingTile.getCoordinates().x
-        let startingY = startingTile.getCoordinates().y
 
         Object.keys(tileList).forEach(tile => {
             if (legalHorizontalMovement(startingTile, tileList[tile], 7) || legalVerticalMovement(startingTile, tileList[tile], 7) || legalDiagonalMovement(startingTile, tileList[tile], 7)) tileList[tile].switchIsMovableTo(true)
@@ -72,12 +68,17 @@ export class Rook extends Piece {
     }
 
     legalMovementFrom = (startingTile, tileList) => {
-        let startingX = startingTile.getCoordinates().x
-        let startingY = startingTile.getCoordinates().y
+        let allowedTiles = []
 
         Object.keys(tileList).forEach(tile => {
-            if (legalHorizontalMovement(startingTile, tileList[tile], 7) || legalVerticalMovement(startingTile, tileList[tile], 7) ) tileList[tile].switchIsMovableTo(true)
+            if (legalHorizontalMovement(startingTile, tileList[tile], 7) || legalVerticalMovement(startingTile, tileList[tile], 7) ) {
+                allowedTiles.push(tileList[tile])
+                tileList[tile].switchIsMovableTo(true) // A VIRER PLUS TARD, GEREE PAR HANDLECOLLISION
+            }
         })
+
+        console.log(allowedTiles)
+
     }
 }
 
@@ -89,12 +90,19 @@ export class Bishop extends Piece {
     }
 
     legalMovementFrom = (startingTile, tileList) => {
-        let startingX = startingTile.getCoordinates().x
-        let startingY = startingTile.getCoordinates().y
+        let allowedTiles = []
 
         Object.keys(tileList).forEach(tile => {
-            if (legalDiagonalMovement(startingTile, tileList[tile], 7)) tileList[tile].switchIsMovableTo(true)
+            if (legalDiagonalMovement(startingTile, tileList[tile], 7)) {
+                allowedTiles.push(tileList[tile])
+                tileList[tile].switchIsMovableTo(true) // A VIRER PLUS TARD, GEREE PAR HANDLECOLLISION
+            }
         })
+
+        handleDiagonalCollision(startingTile, allowedTiles)
+
+        // Object.keys(tileList).forEach(tile => tileList[tile].getIsMovableTo() && console.log(tile,tileList[tile]))
+        // console.log(Object.keys(tileList).filter(tile => tileList[tile].getIsMovableTo()))
     }
 }
 
